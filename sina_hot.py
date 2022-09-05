@@ -99,14 +99,20 @@ def updateReadme(rank):
     Returns:
         None
     '''
-    line = ' [{title}]({href}) {hot}'
+    line = ' [{title}]({href}) {hot}\n'
     lines = [line.format(title=k, hot=v['hot'], href=v['href'])
              for k, v in rank.items()]
     rank = '\n'.join(lines)
     rank = '微博-最后更新时间 {}\n\n'.format(
         datetime.now().strftime('%Y-%m-%d %X')) + rank
-    utils.sync_call_dingding(DINGURL, rank)
     rank = '<!-- Rank Begin -->\n\n' + rank + '\n<!-- Rank End -->'
+
+    markText = {
+        "title": "微博热榜",
+        "text": rank,
+    }
+    print(rank)
+    utils.sync_call_dingding_markdown(DINGURL,markText)
     utils.save(READ_FILE, rank)
 
 

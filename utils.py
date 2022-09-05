@@ -50,3 +50,23 @@ def sync_call_dingding(url, content, at_mobiles=None):
     ret = requests.post(url=url, data=data, headers=header)
     print('sync_call_dingding ret status: %s, text: %s' % (ret.status_code, ret.text))
     return
+
+def sync_call_dingding_markdown(url, content, at_mobiles=None):
+    header = {
+        "Content-Type": "application/json",
+        "Charset": "UTF-8"
+    }
+    if len(content) > 4096:
+        content = content[:4096]
+    msg = {
+        "msgtype": "markdown",
+        "markdown": content,
+        "at": {
+            "atMobiles": at_mobiles,
+            "isAtAll": False
+        }
+    }
+    data = json.dumps(msg)
+    ret = requests.post(url=url, data=data, headers=header)
+    print('sync_call_dingding ret status: %s, text: %s' % (ret.status_code, ret.text))
+    return

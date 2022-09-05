@@ -121,7 +121,7 @@ def updateArchive(rank):
     Returns:
         更新后当天 Markdown 文件内容
     '''
-    line = '[{title}]({url}) {hot} {answerCount}回复'
+    line = '[{title}]({url}) {hot} {answerCount}回复\n'
     lines = [
         line.format(title=v['title'], hot=v['hot'], url=v['url'], answerCount=v['answerCount'])
         for k, v in rank.items()
@@ -144,8 +144,12 @@ def updateReadme(rank):
         None
     '''
     rank = '知乎-最后更新时间 {}\n\n'.format(datetime.now().strftime('%Y-%m-%d %X')) + rank
-    utils.sync_call_dingding(DINGURL, rank)
     rank = '<!-- Rank Begin -->\n\n' + rank + '\n<!-- Rank End -->'
+    markText = {
+        "title": "知乎热榜",
+        "text": rank,
+    }
+    utils.sync_call_dingding_markdown(DINGURL, markText)
     save(READ_FILE, rank)
 
 
